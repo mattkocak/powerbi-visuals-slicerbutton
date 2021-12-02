@@ -25,57 +25,81 @@
 */
 "use strict";
 
-import "core-js/stable";
-import "./../style/visual.less";
 import powerbi from "powerbi-visuals-api";
+import * as models from 'powerbi-models';
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
-import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
-import VisualObjectInstance = powerbi.VisualObjectInstance;
+import IVisualHost = powerbi.extensibility.visual.IVisualHost;
+import FilterAction = powerbi.FilterAction;
 import DataView = powerbi.DataView;
-import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
+import DataViewCategoricalColumn = powerbi.DataViewCategoricalColumn;
+import IFilterColumnTarget = models.IFilterColumnTarget;
 
-import { VisualSettings } from "./settings";
+import "./../style/visual.less"
+
 export class Visual implements IVisual {
+
     private target: HTMLElement;
-    private updateCount: number;
-    private settings: VisualSettings;
-    private textNode: Text;
+    private visualHost: IVisualHost;
+    private clicked: Boolean;
+    private hasEvent: Boolean;
 
     constructor(options: VisualConstructorOptions) {
-        console.log('Visual constructor', options);
         this.target = options.element;
-        this.updateCount = 0;
-        if (document) {
-            const new_p: HTMLElement = document.createElement("p");
-            new_p.appendChild(document.createTextNode("Update count:"));
-            const new_em: HTMLElement = document.createElement("em");
-            this.textNode = document.createTextNode(this.updateCount.toString());
-            new_em.appendChild(this.textNode);
-            new_p.appendChild(new_em);
-            this.target.appendChild(new_p);
-        }
+        this.visualHost = options.host;
+        this.clicked = false;
+        this.hasEvent = false;
     }
 
     public update(options: VisualUpdateOptions) {
-        this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
-        console.log('Visual update', options);
-        if (this.textNode) {
-            this.textNode.textContent = (this.updateCount++).toString();
+        if (!this.hasEvent) {
+            this.setFilterEvent(this.getFilter(options));
+            this.hasEvent = true;
         }
+    
+        var scaledFontSizeWidth: number = Math.round(options.viewport.width / 8);
+        var scaledFontSizeHeight: number = Math.round(options.viewport.height / 5);
+        var scaledFontSize: number = Math.min(...[scaledFontSizeWidth, scaledFontSizeHeight]);
+        var scaledFontSizeCss: string = scaledFontSize + "px";
+        
+        this.target.innerHTML = 
+            `<h1 style='font-size:${scaledFontSizeCss};'>Button</h1>`;
     }
 
-    private static parseSettings(dataView: DataView): VisualSettings {
-        return <VisualSettings>VisualSettings.parse(dataView);
+    private getFilter(options: VisualUpdateOptions) {
+        let dataView: DataView = options.dataViews[0];
+        let categories: DataViewCategoricalColumn = dataView.categorical.categories[0];
+
+        let target: IFilterColumnTarget = {
+            table: categories.source.queryName.substr(0, categories.source.queryName.indexOf('.')),
+            column: categories.source.displayName
+        }
+
+        let values: Array<number> = 
+            dataView.categorical.values[0].values[0].toString().split(',').map(Number);
+
+        let basicFilter = {
+            $schema: "http://powerbi.com/product/schema#basic",
+            target: target,
+            operator: "In",
+            values: values,
+            filterType: models.FilterType.Basic,
+            requireSingleSelection: true
+        }
+
+        return basicFilter;
     }
 
-    /**
-     * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
-     * objects and properties you want to expose to the users in the property pane.
-     *
-     */
-    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
-        return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
+    private setFilterEvent(basicFilter) {
+        this.target.addEventListener("click", () => {
+            if (this.clicked) {
+                this.visualHost.applyJsonFilter(basicFilter, "general", "filter", FilterAction.remove);
+                this.clicked = false;
+            } else {
+                this.visualHost.applyJsonFilter(basicFilter, "general", "filter", FilterAction.merge);
+                this.clicked = true;
+            }
+        });
     }
 }
