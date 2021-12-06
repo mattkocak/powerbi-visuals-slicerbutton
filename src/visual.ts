@@ -39,12 +39,13 @@ import IFilterColumnTarget = models.IFilterColumnTarget;
 import "./../style/visual.less"
 
 export class FilterButton implements IVisual {
+    private FILTER_DELIMINATOR: string = "|";
+    private FILTER_SHOW_ALL_KEYWORD: string = "ALL";
 
     private target: HTMLElement;
     private visualHost: IVisualHost;
     private clicked: Boolean;
     private hasEvent: Boolean;
-    private filterDeliminator: string = '|';
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -79,13 +80,15 @@ export class FilterButton implements IVisual {
 
         let values: Array<any>;
 
-        if (dataView.metadata.columns[0].type.numeric) {
+        if (dataView.categorical.values[0].values[0].toString() === this.FILTER_SHOW_ALL_KEYWORD) {
+            values= dataView.categorical.categories[0].values;
+        } else if (dataView.metadata.columns[0].type.numeric) {
             values = 
-                dataView.categorical.values[0].values[0].toString().split(this.filterDeliminator)
+                dataView.categorical.values[0].values[0].toString().split(this.FILTER_DELIMINATOR)
                 .map(Number);
         } else {
             values = 
-                dataView.categorical.values[0].values[0].toString().split(this.filterDeliminator);
+                dataView.categorical.values[0].values[0].toString().split(this.FILTER_DELIMINATOR);
         }
 
         let basicFilter = {
