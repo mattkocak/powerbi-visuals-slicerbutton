@@ -34,6 +34,7 @@ import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import FilterAction = powerbi.FilterAction;
 import DataView = powerbi.DataView;
 import DataViewCategoricalColumn = powerbi.DataViewCategoricalColumn;
+import ISelectionManager = powerbi.extensibility.ISelectionManager;
 import IFilterColumnTarget = models.IFilterColumnTarget;
 
 import "./../style/visual.less"
@@ -42,22 +43,25 @@ export class FilterButton implements IVisual {
 
     private target: HTMLElement;
     private visualHost: IVisualHost;
+    private selectionManager: ISelectionManager;
     private clicked: Boolean;
     private hasEvent: Boolean;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
         this.visualHost = options.host;
+        this.selectionManager = this.visualHost.createSelectionManager();
         this.clicked = false;
         this.hasEvent = false;
     }
 
     public update(options: VisualUpdateOptions) {
+        /*
         if (!this.hasEvent) {
             this.setFilterEvent(this.getFilter(options));
             this.hasEvent = true;
         }
-    
+        */
         var scaledFontSizeWidth: number = Math.round(options.viewport.width / 8);
         var scaledFontSizeHeight: number = Math.round(options.viewport.height / 5);
         var scaledFontSize: number = Math.min(...[scaledFontSizeWidth, scaledFontSizeHeight]);
@@ -65,6 +69,17 @@ export class FilterButton implements IVisual {
         
         this.target.innerHTML = 
             `<h1 style='font-size:${scaledFontSizeCss};'>Button</h1>`;
+        
+        // Code that implements a simple selection of the first indexed value in a column
+        const categories = options.dataViews[0].categorical.categories;
+
+        const categorySelectionId = this.visualHost.createSelectionIdBuilder()
+            .withCategory(categories[0], 0)
+            .createSelectionId();
+
+        this.target.addEventListener("click", () => {
+            this.selectionManager.select(categorySelectionId);
+        });
     }
 
     private getFilter(options: VisualUpdateOptions) {

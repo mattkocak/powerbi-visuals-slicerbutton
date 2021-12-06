@@ -14,14 +14,7 @@
     "objects": {
         "general": {
             "displayName": "General",
-            "displayNameKey": "formattingGeneral",
-            "properties": {
-                "filter": {
-                    "type": {
-                        "filter": true
-                    }
-                }
-            }
+            "displayNameKey": "formattingGeneral"
         },
         "dataPoint": {
             "displayName": "Data colors",
