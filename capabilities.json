@@ -74,10 +74,10 @@
             "conditions": [
                 {
                     "category": {
-                        "max": 1
+                        "max": 4
                     },
                     "measure": {
-                        "max": 1
+                        "max": 4
                     }
                 }
             ],

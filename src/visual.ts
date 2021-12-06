@@ -56,7 +56,7 @@ export class FilterButton implements IVisual {
 
     public update(options: VisualUpdateOptions) {
         if (!this.hasEvent) {
-            this.setFilterEvent(this.getFilter(options));
+            this.setFilterEvent(this.getFilters(options));
             this.hasEvent = true;
         }
 
@@ -69,47 +69,54 @@ export class FilterButton implements IVisual {
             `<h1 style='font-size:${scaledFontSizeCss};'>Button</h1>`;
     }
 
-    private getFilter(options: VisualUpdateOptions) {
+    private getFilters(options: VisualUpdateOptions) {
         let dataView: DataView = options.dataViews[0];
-        let categories: DataViewCategoricalColumn = dataView.categorical.categories[0];
+        let categoryCount: Number = dataView.categorical.categories.length;
+        let basicFilters: Array<models.IBasicFilter> = [];
 
-        let target: IFilterColumnTarget = {
-            table: categories.source.queryName.substr(0, categories.source.queryName.indexOf('.')),
-            column: categories.source.displayName
+        for (let i = 0; i < categoryCount; i++) {
+            let category: DataViewCategoricalColumn = dataView.categorical.categories[i];
+
+            let target: IFilterColumnTarget = {
+                table: category.source.queryName.substr(0, category.source.queryName.indexOf('.')),
+                column: category.source.displayName
+            }
+
+            let values: Array<any>;
+
+            if (dataView.categorical.values[i].values[0].toString() === this.FILTER_SHOW_ALL_KEYWORD) {
+                values= dataView.categorical.categories[i].values;
+            } else if (dataView.categorical.categories[i].source.type.numeric) {
+                values = 
+                    dataView.categorical.values[i].values[0].toString().split(this.FILTER_DELIMINATOR)
+                    .map(Number);
+            } else {
+                values = 
+                    dataView.categorical.values[i].values[0].toString().split(this.FILTER_DELIMINATOR);
+            }
+
+            let basicFilter: models.IBasicFilter = {
+                $schema: "http://powerbi.com/product/schema#basic",
+                target: target,
+                operator: "In",
+                values: values,
+                filterType: models.FilterType.Basic,
+                requireSingleSelection: true
+            }
+
+            basicFilters.push(basicFilter);
         }
 
-        let values: Array<any>;
-
-        if (dataView.categorical.values[0].values[0].toString() === this.FILTER_SHOW_ALL_KEYWORD) {
-            values= dataView.categorical.categories[0].values;
-        } else if (dataView.metadata.columns[0].type.numeric) {
-            values = 
-                dataView.categorical.values[0].values[0].toString().split(this.FILTER_DELIMINATOR)
-                .map(Number);
-        } else {
-            values = 
-                dataView.categorical.values[0].values[0].toString().split(this.FILTER_DELIMINATOR);
-        }
-
-        let basicFilter = {
-            $schema: "http://powerbi.com/product/schema#basic",
-            target: target,
-            operator: "In",
-            values: values,
-            filterType: models.FilterType.Basic,
-            requireSingleSelection: true
-        }
-
-        return basicFilter;
+        return basicFilters;
     }
 
-    private setFilterEvent(basicFilter) {
+    private setFilterEvent(basicFilters: Array<models.IBasicFilter>) {
         this.target.addEventListener("click", () => {
             if (this.clicked) {
-                this.visualHost.applyJsonFilter(basicFilter, "general", "filter", FilterAction.remove);
+                this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.remove);
                 this.clicked = false;
             } else {
-                this.visualHost.applyJsonFilter(basicFilter, "general", "filter", FilterAction.merge);
+                this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.merge);
                 this.clicked = true;
             }
         });
