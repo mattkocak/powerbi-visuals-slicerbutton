@@ -74,11 +74,9 @@
             "conditions": [
                 {
                     "category": {
-                        "min": 1,
                         "max": 1
                     },
                     "measure": {
-                        "min": 1,
                         "max": 1
                     }
                 }

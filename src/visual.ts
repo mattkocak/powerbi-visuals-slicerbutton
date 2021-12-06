@@ -38,7 +38,7 @@ import IFilterColumnTarget = models.IFilterColumnTarget;
 
 import "./../style/visual.less"
 
-export class Visual implements IVisual {
+export class FilterButton implements IVisual {
 
     private target: HTMLElement;
     private visualHost: IVisualHost;
@@ -75,7 +75,7 @@ export class Visual implements IVisual {
             table: categories.source.queryName.substr(0, categories.source.queryName.indexOf('.')),
             column: categories.source.displayName
         }
-
+        
         let values: Array<number> = 
             dataView.categorical.values[0].values[0].toString().split(',').map(Number);
 

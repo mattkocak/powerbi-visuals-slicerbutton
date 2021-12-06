@@ -1,1 +1,25 @@
-{"visual":{"name":"filterButton","displayName":"FilterButton","guid":"filterButton1A50067195CD4C50B9963487F1787C7C","visualClassName":"Visual","version":"1.0.0","description":"","supportUrl":"","gitHubUrl":""},"apiVersion":"3.8.0","author":{"name":"","email":""},"assets":{"icon":"assets/icon.png"},"externalJS":null,"style":"style/visual.less","capabilities":"capabilities.json","dependencies":null,"stringResources":[]}
+{
+    "visual": {
+        "name": "filterButton",
+        "displayName": "Filter Button",
+        "guid": "filterButton",
+        "visualClassName": "FilterButton",
+        "version": "1.0.0",
+        "description": "A button that allows one to apply filters in a specified, predetermined way simply by clicking on it. The power of this button is that it allows one to filter specific columns without affecting the filters already applied to other columns, which is how a Bookmark behaves.",
+        "supportUrl": "https://community.powerbi.com",
+        "gitHubUrl": "https://github.com/dogbite1337/PBIFilterButton"
+    },
+    "apiVersion": "3.8.0",
+    "author": {
+        "name": "Matt Kocak",
+        "email": "kocak_cc25@hotmail.com"
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": [],
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": []
+}
