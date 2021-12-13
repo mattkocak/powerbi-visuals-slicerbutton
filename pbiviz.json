@@ -15,7 +15,7 @@
         "email": "kocak_cc25@hotmail.com"
     },
     "assets": {
-        "icon": "assets/icon.png"
+        "icon": "assets/custom.png"
     },
     "externalJS": [],
     "style": "style/visual.less",
