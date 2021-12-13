@@ -59,14 +59,6 @@ export class FilterButton implements IVisual {
             this.setFilterEvent(this.getFilters(options));
             this.hasEvent = true;
         }
-
-        var scaledFontSizeWidth: number = Math.round(options.viewport.width / 8);
-        var scaledFontSizeHeight: number = Math.round(options.viewport.height / 5);
-        var scaledFontSize: number = Math.min(...[scaledFontSizeWidth, scaledFontSizeHeight]);
-        var scaledFontSizeCss: string = scaledFontSize + "px";
-        
-        this.target.innerHTML = 
-            `<h1 style='font-size:${scaledFontSizeCss};'>Button</h1>`;
     }
 
     private getFilters(options: VisualUpdateOptions) {
@@ -115,9 +107,13 @@ export class FilterButton implements IVisual {
             if (this.clicked) {
                 this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.remove);
                 this.clicked = false;
+                this.target.innerHTML = 
+                    ``;
             } else {
                 this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.merge);
                 this.clicked = true;
+                this.target.innerHTML = 
+                    `<div class="overlay"></div>`;
             }
         });
     }
