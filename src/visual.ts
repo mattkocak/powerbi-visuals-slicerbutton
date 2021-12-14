@@ -61,6 +61,10 @@ export class FilterButton implements IVisual {
         }
     }
 
+    public destroy() {
+        this.visualHost.applyJsonFilter(null, "general", "filter", FilterAction.merge);
+    }
+
     private getFilters(options: VisualUpdateOptions) {
         let dataView: DataView = options.dataViews[0];
         let categoryCount: Number = dataView.categorical.categories.length;
@@ -103,6 +107,11 @@ export class FilterButton implements IVisual {
     }
 
     private setFilterEvent(basicFilters: Array<models.IBasicFilter>) {
+        // Reset (add/remove) filter in the case it was left on in the previous PBI session
+        // TEMPORARY SOLUTION until more is known about persistent values
+        this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.merge);
+        this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.remove);
+
         this.target.addEventListener("click", () => {
             if (this.clicked) {
                 this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.remove);
