@@ -35,6 +35,9 @@ import FilterAction = powerbi.FilterAction;
 import DataView = powerbi.DataView;
 import DataViewCategoricalColumn = powerbi.DataViewCategoricalColumn;
 import IFilterColumnTarget = models.IFilterColumnTarget;
+import { VisualSettings } from "./settings";
+import VisualObjectInstanceEnumeration = powerbi.VisualObjectInstanceEnumeration;
+import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
 
 import "./../style/visual.less"
 
@@ -46,6 +49,7 @@ export class FilterButton implements IVisual {
     private visualHost: IVisualHost;
     private clicked: Boolean;
     private hasEvent: Boolean;
+    private visualSettings: VisualSettings;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -54,7 +58,15 @@ export class FilterButton implements IVisual {
         this.hasEvent = false;
     }
 
+    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstanceEnumeration {
+        const settings: VisualSettings = this.visualSettings || <VisualSettings>VisualSettings.getDefault();
+        return VisualSettings.enumerateObjectInstances(settings, options);
+    }
+
     public update(options: VisualUpdateOptions) {
+        let dataView: DataView = options.dataViews[0];
+        this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
+
         if (!this.hasEvent) {
             this.setFilterEvent(this.getFilters(options));
             this.hasEvent = true;

@@ -23,47 +23,14 @@
                 }
             }
         },
-        "dataPoint": {
-            "displayName": "Data colors",
+        "filter": {
+            "displayName": "Filters",
             "properties": {
-                "defaultColor": {
-                    "displayName": "Default color",
+                "column": {
+                    "displayName": "Column",
+                    "description": "The column to apply a filter to",
                     "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "showAllDataPoints": {
-                    "displayName": "Show all",
-                    "type": {
-                        "bool": true
-                    }
-                },
-                "fill": {
-                    "displayName": "Fill",
-                    "type": {
-                        "fill": {
-                            "solid": {
-                                "color": true
-                            }
-                        }
-                    }
-                },
-                "fillRule": {
-                    "displayName": "Color saturation",
-                    "type": {
-                        "fill": {}
-                    }
-                },
-                 "fontSize": {
-                    "displayName": "Text Size",
-                    "type": {
-                        "formatting": {
-                            "fontSize": true
-                        }
+                        "text": true
                     }
                 }
             }
