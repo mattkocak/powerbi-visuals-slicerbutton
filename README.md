@@ -15,4 +15,4 @@ Currently at a minimum viable product stage. At this point, one can filter based
 - Improved interface to specify filters (not formatted measure)
 - Applied filter isn't reflected in the filter pane. Fix this (this may not be possible)
 - Improved/streamlined button formatting options
-- Allow "selected" state to persist when navigating back to report
+- ~~Allow "selected" state to persist when navigating back to report~~
