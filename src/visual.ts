@@ -50,6 +50,7 @@ export class FilterButton implements IVisual {
     private clicked: Boolean;
     private hasEvent: Boolean;
     private visualSettings: VisualSettings;
+    private basicFilters: Array<models.IBasicFilter>;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -73,7 +74,9 @@ export class FilterButton implements IVisual {
                 this.target.innerHTML = 
                     `<div class="overlay"></div>`;
             }
-            this.setFilterEvent(this.getFilters(options));
+
+            this.basicFilters = this.getFilters(options);
+            this.setFilterEvent();
             this.hasEvent = true;
         }
     }
@@ -123,19 +126,21 @@ export class FilterButton implements IVisual {
         return basicFilters;
     }
 
-    private setFilterEvent(basicFilters: Array<models.IBasicFilter>) {
-        this.target.addEventListener("click", () => {
-            if (this.clicked) {
-                this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.remove);
-                this.clicked = false;
-                this.target.innerHTML = 
-                    ``;
-            } else {
-                this.visualHost.applyJsonFilter(basicFilters, "general", "filter", FilterAction.merge);
-                this.clicked = true;
-                this.target.innerHTML = 
-                    `<div class="overlay"></div>`;
-            }
-        });
+    private setFilterEvent() {
+        this.target.addEventListener("click", this.applyFilter)
+    }
+
+    private applyFilter = (e: PointerEvent) => {
+        if (this.clicked) {
+            this.visualHost.applyJsonFilter(this.basicFilters, "general", "filter", FilterAction.remove);
+            this.clicked = false;
+            this.target.innerHTML = 
+                ``;
+        } else {
+            this.visualHost.applyJsonFilter(this.basicFilters, "general", "filter", FilterAction.merge);
+            this.clicked = true;
+            this.target.innerHTML = 
+                `<div class="overlay"></div>`;
+        }
     }
 }
