@@ -32,6 +32,7 @@ import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import FilterAction = powerbi.FilterAction;
+import VisualUpdateType = powerbi.VisualUpdateType;
 import DataView = powerbi.DataView;
 import DataViewCategoricalColumn = powerbi.DataViewCategoricalColumn;
 import IFilterColumnTarget = models.IFilterColumnTarget;
@@ -48,7 +49,6 @@ export class FilterButton implements IVisual {
     private target: HTMLElement;
     private visualHost: IVisualHost;
     private clicked: Boolean;
-    private hasEvent: Boolean;
     private visualSettings: VisualSettings;
     private basicFilters: Array<models.IBasicFilter>;
 
@@ -56,7 +56,6 @@ export class FilterButton implements IVisual {
         this.target = options.element;
         this.visualHost = options.host;
         this.clicked = false;
-        this.hasEvent = false;
     }
 
     public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstanceEnumeration {
@@ -68,7 +67,7 @@ export class FilterButton implements IVisual {
         let dataView: DataView = options.dataViews[0];
         this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
 
-        if (!this.hasEvent) {
+        if (options.type === VisualUpdateType.All) {
             if (options.jsonFilters.length > 0) {
                 this.clicked = true;
                 this.target.innerHTML = 
@@ -76,8 +75,21 @@ export class FilterButton implements IVisual {
             }
 
             this.basicFilters = this.getFilters(options);
-            this.setFilterEvent();
-            this.hasEvent = true;
+            if (this.basicFilters.length > 0) {
+                this.setFilterEvent();
+            }
+        } else if (options.type === VisualUpdateType.Data) {
+            this.target.removeEventListener("click", this.applyFilter);
+            this.basicFilters = this.getFilters(options);
+
+            if (this.basicFilters.length > 0) {
+                this.setFilterEvent();
+            } else if (this.clicked) {
+                this.visualHost.applyJsonFilter(null, "general", "filter", FilterAction.merge);
+                this.clicked = false;
+                this.target.innerHTML = 
+                    ``;
+            }
         }
     }
 
@@ -87,8 +99,13 @@ export class FilterButton implements IVisual {
 
     private getFilters(options: VisualUpdateOptions) {
         let dataView: DataView = options.dataViews[0];
-        let categoryCount: Number = dataView.categorical.categories.length;
         let basicFilters: Array<models.IBasicFilter> = [];
+
+        if (!(dataView.categorical.categories && dataView.categorical.values)) {
+            return basicFilters;
+        }
+
+        let categoryCount: Number = dataView.categorical.categories.length;
 
         for (let i = 0; i < categoryCount; i++) {
             let category: DataViewCategoricalColumn = dataView.categorical.categories[i];
