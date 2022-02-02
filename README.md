@@ -8,11 +8,11 @@ Currently at a minimum viable product stage. At this point, one can filter based
 
 ## Features to Implement
 - Allow filter to work with all column types
-- Only applies correct click event after refreshing visual. Fix this
-- Error checking for measure formatting
-- Error checking for types of column being filtered vs filter array
+- ~~Only applies correct click event after refreshing visual. Fix this~~
+- Error checking for measure formatting (not needed, will migrate selection to a format field)
+- Error checking for types of columns being filtered vs filter array
 - Filter based on multiple logic (include, exclude, etc.)
-- Improved interface to specify filters (not formatted measure)
-- Applied filter isn't reflected in the filter pane. Fix this (this may not be possible)
+- Improved interface to specify filters (not formatted measure, will migrate selection to a format field)
+- ~~Applied filter isn't reflected in the filter pane. Fix this (this is not be possible)~~
 - Improved/streamlined button formatting options
 - ~~Allow "selected" state to persist when navigating back to report~~
