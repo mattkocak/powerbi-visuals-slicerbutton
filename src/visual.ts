@@ -43,7 +43,7 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import "./../style/visual.less"
 
 export class FilterButton implements IVisual {
-    private readonly FILTER_DELIMINATOR: string = "|";
+    private readonly FILTER_DELIMINATOR: string = ",";
 
     private target: HTMLElement;
     private visualHost: IVisualHost;
@@ -100,7 +100,7 @@ export class FilterButton implements IVisual {
         let dataView: DataView = options.dataViews[0];
         let basicFilters: Array<models.IBasicFilter> = [];
 
-        if (!(dataView.categorical.categories && dataView.categorical.values)) {
+        if (!dataView.categorical.categories) {
             return basicFilters;
         }
 
@@ -117,12 +117,9 @@ export class FilterButton implements IVisual {
             let values: Array<any>;
 
             if (dataView.categorical.categories[i].source.type.numeric) {
-                values = 
-                    dataView.categorical.values[i].values[0].toString().split(this.FILTER_DELIMINATOR)
-                    .map(Number);
+                values = this.visualSettings.slicer.values.split(this.FILTER_DELIMINATOR).map(Number);
             } else {
-                values = 
-                    dataView.categorical.values[i].values[0].toString().split(this.FILTER_DELIMINATOR);
+                values = this.visualSettings.slicer.values.split(this.FILTER_DELIMINATOR);
             }
 
             let basicFilter: models.IBasicFilter = {

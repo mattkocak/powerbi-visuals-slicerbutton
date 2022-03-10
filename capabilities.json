@@ -1,14 +1,9 @@
 {
     "dataRoles": [
         {
-            "displayName": "Category Data",
+            "displayName": "Category",
             "name": "category",
             "kind": "Grouping"
-        },
-        {
-            "displayName": "Measure Data",
-            "name": "measure",
-            "kind": "Measure"
         }
     ],
     "objects": {
@@ -23,12 +18,12 @@
                 }
             }
         },
-        "filter": {
-            "displayName": "Filters",
+        "slicer": {
+            "displayName": "Slicer",
             "properties": {
-                "column": {
-                    "displayName": "Column",
-                    "description": "The column to apply a filter to",
+                "values": {
+                    "displayName": "Values",
+                    "description": "A comma-delimited list of values to include when slicing (do not include spaces before or after commas)",
                     "type": {
                         "text": true
                     }
@@ -41,13 +36,10 @@
             "conditions": [
                 {
                     "category": {
-                        "max": 4
-                    },
-                    "measure": {
-                        "max": 4
+                        "max": 1
                     }
                 }
-            ],
+            ], 
             "categorical": {
                 "categories": {
                     "for": {
@@ -56,15 +48,6 @@
                     "dataReductionAlgorithm": {
                         "top": {}
                     }
-                },
-                "values": {
-                    "select": [
-                        {
-                            "bind": {
-                                "to": "measure"
-                            }
-                        }
-                    ]
                 }
             }
         }

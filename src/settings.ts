@@ -30,10 +30,9 @@ import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 import DataViewObjectsParser = dataViewObjectsParser.DataViewObjectsParser;
 
 export class VisualSettings extends DataViewObjectsParser {
-  public filter: FilterSettings = new FilterSettings();
+  public slicer: SlicerSettings = new SlicerSettings();
 }
 
-export class FilterSettings {
-  public column: string = "";
+export class SlicerSettings {
+  public values: string = "";
 }
-
