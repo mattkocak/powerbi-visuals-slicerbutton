@@ -43,8 +43,7 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import "./../style/visual.less"
 
 export class FilterButton implements IVisual {
-    private FILTER_DELIMINATOR: string = "|";
-    private FILTER_SHOW_ALL_KEYWORD: string = "ALL";
+    private readonly FILTER_DELIMINATOR: string = "|";
 
     private target: HTMLElement;
     private visualHost: IVisualHost;
@@ -117,9 +116,7 @@ export class FilterButton implements IVisual {
 
             let values: Array<any>;
 
-            if (dataView.categorical.values[i].values[0].toString() === this.FILTER_SHOW_ALL_KEYWORD) {
-                values= dataView.categorical.categories[i].values;
-            } else if (dataView.categorical.categories[i].source.type.numeric) {
+            if (dataView.categorical.categories[i].source.type.numeric) {
                 values = 
                     dataView.categorical.values[i].values[0].toString().split(this.FILTER_DELIMINATOR)
                     .map(Number);
