@@ -106,6 +106,7 @@ export class FilterButton implements IVisual {
 
         let categoryCount: Number = dataView.categorical.categories.length;
 
+        /* This loop allows for slicing based on multiple columns (although we are currently restricted to 1 in capabilities.json) */
         for (let i = 0; i < categoryCount; i++) {
             let category: DataViewCategoricalColumn = dataView.categorical.categories[i];
 
