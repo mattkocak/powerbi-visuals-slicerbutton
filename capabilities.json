@@ -1,4 +1,5 @@
 {
+    "supportsSynchronizingFilterState": true,
     "dataRoles": [
         {
             "displayName": "Category",
