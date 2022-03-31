@@ -28,6 +28,17 @@
                     "type": {
                         "text": true
                     }
+                },
+                "selectionFill": {
+                    "displayName": "Selection Fill",
+                    "description": "The fill color of the visual upon user selection",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
                 }
             }
         }

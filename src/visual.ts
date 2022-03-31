@@ -69,8 +69,9 @@ export class FilterButton implements IVisual {
         if (options.type === VisualUpdateType.All) {
             if (options.jsonFilters.length > 0) {
                 this.clicked = true;
-                this.target.innerHTML = 
-                    `<div class="overlay"></div>`;
+                /*this.target.innerHTML = 
+                    `<div class="overlay"></div>`;*/
+                this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
             }
 
             this.basicFilters = this.getFilters(options);
@@ -81,13 +82,19 @@ export class FilterButton implements IVisual {
             this.target.removeEventListener("click", this.applyFilter);
             this.basicFilters = this.getFilters(options);
 
+            // Update the selection fill color in case a change was made to this property
+            if(this.clicked) {
+                this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
+            }
+
             if (this.basicFilters.length > 0) {
                 this.setFilterEvent();
             } else if (this.clicked) {
                 this.visualHost.applyJsonFilter(null, "general", "filter", FilterAction.merge);
                 this.clicked = false;
-                this.target.innerHTML = 
-                    ``;
+                /*this.target.innerHTML = 
+                    ``;*/
+                this.target.style.backgroundColor = "rgba(255, 255, 255, 0)";
             }
         }
     }
@@ -146,13 +153,15 @@ export class FilterButton implements IVisual {
         if (this.clicked) {
             this.visualHost.applyJsonFilter(this.basicFilters, "general", "filter", FilterAction.remove);
             this.clicked = false;
-            this.target.innerHTML = 
-                ``;
+            /*this.target.innerHTML = 
+                ``;*/
+            this.target.style.backgroundColor = "rgba(255, 255, 255, 0)";
         } else {
             this.visualHost.applyJsonFilter(this.basicFilters, "general", "filter", FilterAction.merge);
             this.clicked = true;
-            this.target.innerHTML = 
-                `<div class="overlay"></div>`;
+            /*this.target.innerHTML = 
+                `<div class="overlay"></div>`;*/
+            this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
         }
     }
 }
