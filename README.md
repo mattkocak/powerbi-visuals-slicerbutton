@@ -16,3 +16,4 @@ Currently at a minimum viable product stage. At this point, one can filter based
 - ~~Applied filter isn't reflected in the filter pane. Fix this (this is not be possible)~~
 - Improved/streamlined button formatting options
 - ~~Allow "selected" state to persist when navigating back to report~~
+- Add landing page

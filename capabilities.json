@@ -1,4 +1,7 @@
 {
+    "suppressDefaultTitle": true,
+    "supportsLandingPage": true,
+    "supportsEmptyDataView": true,
     "supportsSynchronizingFilterState": true,
     "dataRoles": [
         {
