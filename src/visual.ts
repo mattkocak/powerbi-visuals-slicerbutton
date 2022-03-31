@@ -69,9 +69,8 @@ export class FilterButton implements IVisual {
         if (options.type === VisualUpdateType.All) {
             if (options.jsonFilters.length > 0) {
                 this.clicked = true;
-                /*this.target.innerHTML = 
-                    `<div class="overlay"></div>`;*/
                 this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
+                this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
             }
 
             this.basicFilters = this.getFilters(options);
@@ -85,6 +84,7 @@ export class FilterButton implements IVisual {
             // Update the selection fill color in case a change was made to this property
             if(this.clicked) {
                 this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
+                this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
             }
 
             if (this.basicFilters.length > 0) {
@@ -92,9 +92,8 @@ export class FilterButton implements IVisual {
             } else if (this.clicked) {
                 this.visualHost.applyJsonFilter(null, "general", "filter", FilterAction.merge);
                 this.clicked = false;
-                /*this.target.innerHTML = 
-                    ``;*/
-                this.target.style.backgroundColor = "rgba(255, 255, 255, 0)";
+                this.target.style.backgroundColor = "#FFFFFF";
+                this.target.style.opacity = "0";
             }
         }
     }
@@ -153,15 +152,13 @@ export class FilterButton implements IVisual {
         if (this.clicked) {
             this.visualHost.applyJsonFilter(this.basicFilters, "general", "filter", FilterAction.remove);
             this.clicked = false;
-            /*this.target.innerHTML = 
-                ``;*/
-            this.target.style.backgroundColor = "rgba(255, 255, 255, 0)";
+            this.target.style.backgroundColor = "#FFFFFF";
+            this.target.style.opacity = "0";
         } else {
             this.visualHost.applyJsonFilter(this.basicFilters, "general", "filter", FilterAction.merge);
             this.clicked = true;
-            /*this.target.innerHTML = 
-                `<div class="overlay"></div>`;*/
             this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
+            this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
         }
     }
 }

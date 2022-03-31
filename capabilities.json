@@ -39,6 +39,13 @@
                             }
                         }
                     }
+                },
+                "transparency": {
+                    "displayName": "Fill Transparency",
+                    "description": "The transparency of the visual's fill upon user selection",
+                    "type": {
+                        "numeric": true
+                    }
                 }
             }
         }
