@@ -41,6 +41,7 @@ import VisualObjectInstanceEnumeration = powerbi.VisualObjectInstanceEnumeration
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
 
 import "./../style/visual.less"
+import * as d3 from "d3";
 
 export class FilterButton implements IVisual {
     private readonly FILTER_DELIMINATOR: string = ",";
@@ -50,6 +51,9 @@ export class FilterButton implements IVisual {
     private clicked: Boolean;
     private visualSettings: VisualSettings;
     private basicFilters: Array<models.IBasicFilter>;
+    private isLandingPageOn: boolean;
+    private LandingPageRemoved: boolean;
+    private LandingPage: d3.Selection<any, any, any, any>;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
@@ -65,6 +69,8 @@ export class FilterButton implements IVisual {
     public update(options: VisualUpdateOptions) {
         let dataView: DataView = options.dataViews[0];
         this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
+
+        this.HandleLandingPage(options);
 
         if (options.type === VisualUpdateType.All) {
             if (options.jsonFilters.length > 0) {
@@ -100,6 +106,33 @@ export class FilterButton implements IVisual {
 
     public destroy() {
         this.visualHost.applyJsonFilter(null, "general", "filter", FilterAction.merge);
+    }
+
+    private HandleLandingPage(options: VisualUpdateOptions) {
+        console.log(options.dataViews)
+        console.log(options.dataViews.length)
+        if(!options.dataViews || !options.dataViews[0].metadata.columns.length) {
+            console.log("rawr")
+            if(!this.isLandingPageOn) {
+                this.isLandingPageOn = true;
+                const SampleLandingPage: Element = this.createSampleLandingPage(); //create a landing page
+                this.target.appendChild(SampleLandingPage);
+                this.LandingPage = d3.select(SampleLandingPage);
+            }
+
+        } else {
+                if(this.isLandingPageOn && !this.LandingPageRemoved){
+                    this.LandingPageRemoved = true;
+                    this.LandingPage.remove();
+                }
+        }
+    }
+
+    private createSampleLandingPage() {
+        const newH1: Element = document.createElement("h1");
+        const newContent: Text = document.createTextNode("Test");
+        newH1.appendChild(newContent);
+        return newH1;
     }
 
     private getFilters(options: VisualUpdateOptions) {
