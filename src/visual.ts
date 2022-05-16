@@ -109,22 +109,19 @@ export class FilterButton implements IVisual {
     }
 
     private HandleLandingPage(options: VisualUpdateOptions) {
-        console.log(options.dataViews)
-        console.log(options.dataViews.length)
         if(!options.dataViews || !options.dataViews[0].metadata.columns.length) {
-            console.log("rawr")
             if(!this.isLandingPageOn) {
                 this.isLandingPageOn = true;
                 const SampleLandingPage: Element = this.createSampleLandingPage(); //create a landing page
                 this.target.appendChild(SampleLandingPage);
                 this.LandingPage = d3.select(SampleLandingPage);
+            } else if (this.isLandingPageOn && this.LandingPageRemoved) {
+                this.LandingPageRemoved = false;
+                this.target.appendChild(this.LandingPage.node());
             }
-
-        } else {
-                if(this.isLandingPageOn && !this.LandingPageRemoved){
-                    this.LandingPageRemoved = true;
-                    this.LandingPage.remove();
-                }
+        } else if(this.isLandingPageOn && !this.LandingPageRemoved) {
+            this.LandingPageRemoved = true;
+            this.LandingPage.remove();
         }
     }
 
