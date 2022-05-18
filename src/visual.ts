@@ -126,10 +126,46 @@ export class FilterButton implements IVisual {
     }
 
     private createSampleLandingPage() {
-        const newH1: Element = document.createElement("h1");
-        const newContent: Text = document.createTextNode("Test");
-        newH1.appendChild(newContent);
-        return newH1;
+        const landingPage: HTMLElement = document.createElement("div");
+
+        const title: HTMLElement = document.createElement("h5");
+        title.appendChild(
+            document.createTextNode("Start Instructions")
+        );
+        title.style.margin = "0";
+
+        const list: HTMLElement = document.createElement("ul");
+        list.style.padding = "0 0 0 20px";
+        list.style.margin = "8px 0"
+
+        const itemOne: HTMLElement = document.createElement("li");
+        itemOne.appendChild(
+            document.createTextNode("Add the column that you would like to slice to the Category field")
+        );
+        itemOne.style.listStyle = "outside";
+        itemOne.style.marginBottom = "4px";
+
+        const itemTwo: HTMLElement = document.createElement("li");
+        itemTwo.appendChild(
+            document.createTextNode("In the Slicer > Values field, enter the values that you would like to INCLUDE upon clicking the visual. Do this as a comma-separated list (without spaces between items)")
+        );
+        itemTwo.style.listStyle = "outside";
+        itemTwo.style.marginBottom = "4px";
+
+        const itemThree: HTMLElement = document.createElement("li");
+        itemThree.appendChild(
+            document.createTextNode("Optionally, drag this visual over another visual (ex. a Card) and change the Background > Transparency to 100%")
+        );
+        itemThree.style.listStyle = "outside";
+
+        list.appendChild(itemOne);
+        list.appendChild(itemTwo);
+        list.appendChild(itemThree);
+
+        landingPage.appendChild(title);
+        landingPage.appendChild(list);
+
+        return landingPage;
     }
 
     private getFilters(options: VisualUpdateOptions) {
