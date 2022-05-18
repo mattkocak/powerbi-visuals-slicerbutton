@@ -34,16 +34,14 @@ import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import FilterAction = powerbi.FilterAction;
 import VisualUpdateType = powerbi.VisualUpdateType;
 import DataView = powerbi.DataView;
-import DataViewCategoricalColumn = powerbi.DataViewCategoricalColumn;
-import IFilterColumnTarget = models.IFilterColumnTarget;
 import { VisualSettings } from "./settings";
 import VisualObjectInstanceEnumeration = powerbi.VisualObjectInstanceEnumeration;
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
-
 import "./../style/visual.less"
 import * as d3 from "d3";
+import { Utility } from "./utility";
 
-export class FilterButton implements IVisual {
+export class SlicerButton implements IVisual {
     private readonly FILTER_DELIMINATOR: string = ",";
 
     private target: HTMLElement;
@@ -54,11 +52,13 @@ export class FilterButton implements IVisual {
     private isLandingPageOn: boolean;
     private LandingPageRemoved: boolean;
     private LandingPage: d3.Selection<any, any, any, any>;
+    private utility: Utility;
 
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
         this.visualHost = options.host;
         this.clicked = false;
+        this.utility = new Utility();
     }
 
     public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstanceEnumeration {
@@ -70,8 +70,6 @@ export class FilterButton implements IVisual {
         let dataView: DataView = options.dataViews[0];
         this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
 
-        this.HandleLandingPage(options);
-
         if (options.type === VisualUpdateType.All) {
             if (options.jsonFilters.length > 0) {
                 this.clicked = true;
@@ -79,19 +77,23 @@ export class FilterButton implements IVisual {
                 this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
             }
 
-            this.basicFilters = this.getFilters(options);
+            this.basicFilters = this.utility.getFilters(options, this.visualSettings);
+
             if (this.basicFilters.length > 0) {
                 this.setFilterEvent();
             }
         } else if (options.type === VisualUpdateType.Data) {
+            // If the update is of type data, we need to re-construct our filter setup
             this.target.removeEventListener("click", this.applyFilter);
-            this.basicFilters = this.getFilters(options);
 
             // Update the selection fill color in case a change was made to this property
             if(this.clicked) {
                 this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
                 this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
             }
+            
+            // Set the filter events or remove applied filters if the update removed columns
+            this.basicFilters = this.utility.getFilters(options, this.visualSettings);
 
             if (this.basicFilters.length > 0) {
                 this.setFilterEvent();
@@ -102,17 +104,19 @@ export class FilterButton implements IVisual {
                 this.target.style.opacity = "0";
             }
         }
+
+        this.handleLandingPage(options);
     }
 
     public destroy() {
         this.visualHost.applyJsonFilter(null, "general", "filter", FilterAction.merge);
     }
 
-    private HandleLandingPage(options: VisualUpdateOptions) {
+    private handleLandingPage(options: VisualUpdateOptions) {
         if(!options.dataViews || !options.dataViews[0].metadata.columns.length) {
             if(!this.isLandingPageOn) {
                 this.isLandingPageOn = true;
-                const SampleLandingPage: Element = this.createSampleLandingPage(); //create a landing page
+                const SampleLandingPage: Element = this.utility.createSampleLandingPage();
                 this.target.appendChild(SampleLandingPage);
                 this.LandingPage = d3.select(SampleLandingPage);
             } else if (this.isLandingPageOn && this.LandingPageRemoved) {
@@ -123,91 +127,6 @@ export class FilterButton implements IVisual {
             this.LandingPageRemoved = true;
             this.LandingPage.remove();
         }
-    }
-
-    private createSampleLandingPage() {
-        const landingPage: HTMLElement = document.createElement("div");
-
-        const title: HTMLElement = document.createElement("h5");
-        title.appendChild(
-            document.createTextNode("Start Instructions")
-        );
-        title.style.margin = "0";
-
-        const list: HTMLElement = document.createElement("ul");
-        list.style.padding = "0 0 0 20px";
-        list.style.margin = "8px 0"
-
-        const itemOne: HTMLElement = document.createElement("li");
-        itemOne.appendChild(
-            document.createTextNode("Add the column that you would like to slice to the Category field")
-        );
-        itemOne.style.listStyle = "outside";
-        itemOne.style.marginBottom = "4px";
-
-        const itemTwo: HTMLElement = document.createElement("li");
-        itemTwo.appendChild(
-            document.createTextNode("In the Slicer > Values field, enter the values that you would like to INCLUDE upon clicking the visual. Do this as a comma-separated list (without spaces between items)")
-        );
-        itemTwo.style.listStyle = "outside";
-        itemTwo.style.marginBottom = "4px";
-
-        const itemThree: HTMLElement = document.createElement("li");
-        itemThree.appendChild(
-            document.createTextNode("Optionally, drag this visual over another visual (ex. a Card) and change the Background > Transparency to 100%")
-        );
-        itemThree.style.listStyle = "outside";
-
-        list.appendChild(itemOne);
-        list.appendChild(itemTwo);
-        list.appendChild(itemThree);
-
-        landingPage.appendChild(title);
-        landingPage.appendChild(list);
-
-        return landingPage;
-    }
-
-    private getFilters(options: VisualUpdateOptions) {
-        let dataView: DataView = options.dataViews[0];
-        let basicFilters: Array<models.IBasicFilter> = [];
-
-        if (!dataView.categorical.categories) {
-            return basicFilters;
-        }
-
-        let categoryCount: Number = dataView.categorical.categories.length;
-
-        /* This loop allows for slicing based on multiple columns (although we are currently restricted to 1 in capabilities.json) */
-        for (let i = 0; i < categoryCount; i++) {
-            let category: DataViewCategoricalColumn = dataView.categorical.categories[i];
-
-            let target: IFilterColumnTarget = {
-                table: category.source.queryName.substr(0, category.source.queryName.indexOf('.')),
-                column: category.source.displayName
-            }
-
-            let values: Array<any>;
-
-            if (dataView.categorical.categories[i].source.type.numeric) {
-                values = this.visualSettings.slicer.values.split(this.FILTER_DELIMINATOR).map(Number);
-            } else {
-                values = this.visualSettings.slicer.values.split(this.FILTER_DELIMINATOR);
-            }
-
-            let basicFilter: models.IBasicFilter = {
-                $schema: "http://powerbi.com/product/schema#basic",
-                target: target,
-                operator: "In",
-                values: values,
-                filterType: models.FilterType.Basic,
-                requireSingleSelection: true
-            }
-
-            basicFilters.push(basicFilter);
-        }
-
-        return basicFilters;
     }
 
     private setFilterEvent() {

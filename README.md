@@ -1,4 +1,4 @@
-# PBIFilterButton
+# Slicer Button
 
 ## Description
 A button that allows one to apply a filter in a specified, predetermined way simply by clicking on it. The power of this button is that it allows one to filter a specific column without affecting the filters already applied to other columns, which is how Bookmarks behave.
