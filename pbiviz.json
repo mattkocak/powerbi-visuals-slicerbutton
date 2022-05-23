@@ -9,7 +9,7 @@
         "supportUrl": "https://community.powerbi.com",
         "gitHubUrl": "https://github.com/mattkocak/powerbi-visuals-slicerbutton"
     },
-    "apiVersion": "3.8.0",
+    "apiVersion": "4.2.0",
     "author": {
         "name": "Matt Kocak",
         "email": "kocak_cc25@hotmail.com"
