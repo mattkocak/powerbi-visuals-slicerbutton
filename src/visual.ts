@@ -70,7 +70,7 @@ export class SlicerButton implements IVisual {
         let dataView: DataView = options.dataViews[0];
         this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
 
-        if (options.type === VisualUpdateType.All) {
+        if (options.type === VisualUpdateType.Custom) {
             if (options.jsonFilters.length > 0) {
                 this.clicked = true;
                 this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
