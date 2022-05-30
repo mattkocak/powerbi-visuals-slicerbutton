@@ -34,7 +34,8 @@ export class VisualSettings extends DataViewObjectsParser {
 }
 
 export class SlicerSettings {
-  public values: string = "";
+  public values1: string = "";
+  public values2: string = "";
   public selectionFill: string = "#000000";
   public transparency: number = 85;
 }

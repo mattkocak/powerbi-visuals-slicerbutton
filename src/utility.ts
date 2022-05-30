@@ -62,10 +62,13 @@ export class Utility {
             return basicFilters;
         }
 
-        let categoryCount: Number = dataView.categorical.categories.length;
+        let categoryCount: number = dataView.categorical.categories.length;
 
-        /* This loop allows for slicing based on multiple columns (although we are currently 
-            restricted to 1 in capabilities.json) */
+        /* An array of the values to be sliced as specified by the user */
+        let slicerText: Array<string> = [visualSettings.slicer.values1, visualSettings.slicer.values2];
+
+        /* The following loop allows for slicing based on multiple columns (we are currently 
+            restricted to 2 in capabilities.json) */
         for (let i = 0; i < categoryCount; i++) {
             let category: DataViewCategoricalColumn = dataView.categorical.categories[i];
 
@@ -77,9 +80,9 @@ export class Utility {
             let values: Array<any>;
 
             if (dataView.categorical.categories[i].source.type.numeric) {
-                values = visualSettings.slicer.values.split(this.FILTER_DELIMINATOR).map(Number);
+                values = slicerText[i].split(this.FILTER_DELIMINATOR).map(Number);
             } else {
-                values = visualSettings.slicer.values.split(this.FILTER_DELIMINATOR);
+                values = slicerText[i].split(this.FILTER_DELIMINATOR);
             }
 
             let basicFilter: models.IBasicFilter = {
