@@ -26,14 +26,14 @@ export class Utility {
 
         const itemOne: HTMLElement = document.createElement("li");
         itemOne.appendChild(
-            document.createTextNode("Add the column that you would like to slice to the Category field")
+            document.createTextNode("Add the column(s) that you would like to slice to the Category field")
         );
         itemOne.style.listStyle = "outside";
         itemOne.style.marginBottom = "4px";
 
         const itemTwo: HTMLElement = document.createElement("li");
         itemTwo.appendChild(
-            document.createTextNode("In the Slicer > Values field, enter the values that you would like to INCLUDE upon clicking the visual. Do this as a comma-separated list (without spaces between items)")
+            document.createTextNode("In the Slicer > Values field(s), enter the values that you would like to INCLUDE upon clicking the visual. Do this as a comma-separated list (without spaces between items)")
         );
         itemTwo.style.listStyle = "outside";
         itemTwo.style.marginBottom = "4px";
