@@ -46,7 +46,8 @@ export class SlicerButton implements IVisual {
 
     private target: HTMLElement;
     private visualHost: IVisualHost;
-    private clicked: Boolean;
+    private initialLoad: boolean;
+    private clicked: boolean;
     private visualSettings: VisualSettings;
     private basicFilters: Array<models.IBasicFilter>;
     private isLandingPageOn: boolean;
@@ -57,6 +58,7 @@ export class SlicerButton implements IVisual {
     constructor(options: VisualConstructorOptions) {
         this.target = options.element;
         this.visualHost = options.host;
+        this.initialLoad = true;
         this.clicked = false;
         this.utility = new Utility();
     }
@@ -70,7 +72,7 @@ export class SlicerButton implements IVisual {
         let dataView: DataView = options.dataViews[0];
         this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
 
-        if (options.type === VisualUpdateType.Custom) {
+        if (this.initialLoad) {
             if (options.jsonFilters.length > 0) {
                 this.clicked = true;
                 this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
@@ -82,6 +84,8 @@ export class SlicerButton implements IVisual {
             if (this.basicFilters.length > 0) {
                 this.setFilterEvent();
             }
+
+            this.initialLoad = false;
         } else if (options.type === VisualUpdateType.Data) {
             // If the update is of type data, we need to re-construct our filter setup
             this.target.removeEventListener("click", this.applyFilter);
