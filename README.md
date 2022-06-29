@@ -3,7 +3,7 @@
 ## Description
 A button that allows one to apply multiple slicers in a specified, predetermined way simply by clicking on it. A particularly powerful use case is making this button a transparent overlay over a [Card](https://docs.microsoft.com/en-us/power-bi/visuals/power-bi-visualization-card) visual. This essentially turns the Card visual into a clickable slicer without any of the potential limitations of a bookmark, which is the alternative to accomplish this.
 
-IMAGE
+<img width="127" alt="Card Overlay Example" src="https://user-images.githubusercontent.com/21995128/176468412-4afa21c0-43f2-4bdb-adcf-3e355e7a0e3f.png">
 
 ## Features
 - Supports Power BI Desktop February 2022 and later
@@ -22,7 +22,7 @@ IMAGE
 - In Power BI, follow the steps in the [Import a custom visual](https://docs.microsoft.com/en-us/power-bi/developer/visuals/import-visual#import-a-visual-file-from-your-local-computer-into-power-bi) article to import the Slicer Button visual into your report
 - Watch the tutorial videos below or follow the instructions displayed on the visual to begin using the Slicer Button
 
-IMAGE
+<img width="133" alt="Start Instructions" src="https://user-images.githubusercontent.com/21995128/176464710-a7c62a17-5ba4-466c-bd01-b4e144168133.png">
 
 ## Tutorials
 - Basic Usage:
