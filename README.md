@@ -15,9 +15,9 @@ IMAGE
 
 ## Setup
 - Make sure to use Power BI Service or Power BI Desktop February 2022 or later
-- Click on the latest release (right-hand side of this repository) and download the slicerButtonv#.#.#.pviz file
+- Click on the latest release (right-hand side of this repository) and download the **slicerButtonv#.#.#.pviz** file from the Assets section
 
-IMAGE
+<img width="192" alt="image" src="https://user-images.githubusercontent.com/21995128/176463324-e24979ce-39e6-478c-80f9-c22f4b4cf3b8.png">
 
 - In Power BI, follow the steps in the [Import a custom visual](https://docs.microsoft.com/en-us/power-bi/developer/visuals/import-visual#import-a-visual-file-from-your-local-computer-into-power-bi) article to import the Slicer Button visual into your report
 - Watch the tutorial videos below or follow the instructions displayed on the visual to begin using the Slicer Button
