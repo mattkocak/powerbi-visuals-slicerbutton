@@ -6,6 +6,7 @@ A button that allows one to apply multiple slicers in a specified, predetermined
 IMAGE
 
 ## Features
+- Supports Power BI Desktop February 2022 and later
 - Slice number and text data type columns
 - Slice up to two columns at the same time
 - Slice based on specified comma-delimited **inclusion** list
@@ -13,6 +14,15 @@ IMAGE
 - Other common button formatting features
 
 ## Setup
+- Make sure to use Power BI Service or Power BI Desktop February 2022 or later
+- Click on the latest release (right-hand side of this repository) and download the slicerButtonv#.#.#.pviz file
+
+IMAGE
+
+- In Power BI, follow the steps in the [Import a custom visual](https://docs.microsoft.com/en-us/power-bi/developer/visuals/import-visual#import-a-visual-file-from-your-local-computer-into-power-bi) article to import the Slicer Button visual into your report
+- Watch the tutorial videos below or follow the instructions displayed on the visual to begin using the Slicer Button
+
+IMAGE
 
 ## Tutorials
 - Basic Usage:
