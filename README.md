@@ -8,7 +8,7 @@ A button that allows one to apply multiple slicers in a specified, predetermined
 ## Features
 - Supports Power BI Desktop February 2022 and later
 - Slice number and text data type columns
-- Slice up to two columns at the same time
+- Slice up to two columns at the same time (utilizes AND logic)
 - Slice based on specified comma-delimited **inclusion** list
 - Format selection color and transparency
 - Other common button formatting features
@@ -31,6 +31,3 @@ A button that allows one to apply multiple slicers in a specified, predetermined
 
 ## Support
 Submit issues, questions, and feature requests as [new issues](https://github.com/mattkocak/powerbi-visuals-slicerbutton/issues/new) in this repository. Use the correct label for the submission (bug, enhancement, etc).
-
-## Custom Development
-This is an open source project and the repository can be forked and modified. Microsoft provides various articles on custom visual development, starting with their [Developing your own Power BI visual](https://docs.microsoft.com/en-us/power-bi/developer/visuals/develop-power-bi-visuals) article.
