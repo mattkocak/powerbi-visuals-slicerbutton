@@ -25,9 +25,9 @@ A button that allows one to apply multiple slicers in a specified, predetermined
 <img width="133" alt="Start Instructions" src="https://user-images.githubusercontent.com/21995128/176464710-a7c62a17-5ba4-466c-bd01-b4e144168133.png">
 
 ## Tutorials
-- Basic Usage:
-- Slicing Based on Two Columns:
-- Complex Logic and Date Slicing with Calculated Columns:
+- [Basic Usage](https://www.youtube.com/watch?v=8x2QoE8M2yA&ab_channel=MattKocak)
+- [Slicing Based on Two Columns](https://www.youtube.com/watch?v=Mu9kRZot1d0&ab_channel=MattKocak)
+- [Slicing Dates and Complex Logic](https://www.youtube.com/watch?v=_mTS2_dPBZ8&ab_channel=MattKocak)
 
 ## Support
 Submit issues, questions, and feature requests as [new issues](https://github.com/mattkocak/powerbi-visuals-slicerbutton/issues/new) in this repository. Use the correct label for the submission (bug, enhancement, etc).
