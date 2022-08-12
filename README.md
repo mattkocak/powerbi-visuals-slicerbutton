@@ -1,9 +1,11 @@
 # Slicer Button
 
 ## Description
-A button in Power BI that allows one to apply multiple slicers in a specified, predetermined way simply by clicking on it. A particularly powerful use case is making this button a transparent overlay over a [Card](https://docs.microsoft.com/en-us/power-bi/visuals/power-bi-visualization-card) visual. This essentially turns the Card visual into a clickable slicer without any of the potential limitations of a bookmark, which is the alternative to accomplish this.
+A button in Power BI that allows one to apply multiple slicers in a specified, predetermined way simply by clicking on it. A particularly powerful use case is making this button a transparent overlay over a [Card](https://docs.microsoft.com/en-us/power-bi/visuals/power-bi-visualization-card) visual. This essentially turns the Card visual into a clickable slicer without any of the potential limitations of a bookmark, which is the main alternative to accomplish this.
 
-<img width="127" alt="Card Overlay Example" src="https://user-images.githubusercontent.com/21995128/176468412-4afa21c0-43f2-4bdb-adcf-3e355e7a0e3f.png">
+Additional context for this custom visual can be found in the [Turn your cards into slicers with the Slicer Button custom visual](https://community.powerbi.com/t5/Community-Blog/Turn-your-cards-into-slicers-with-the-Slicer-Button-custom/ba-p/2676449) blog post.
+
+![Slicer Button](https://user-images.githubusercontent.com/21995128/184308888-21f7c780-ed5b-4e72-9e7b-3f6b8596ad95.gif)
 
 ## Features
 - Supports Power BI Desktop February 2022 and later
