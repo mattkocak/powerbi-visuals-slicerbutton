@@ -71,12 +71,10 @@ export class SlicerButton implements IVisual {
     public update(options: VisualUpdateOptions) {
         let dataView: DataView = options.dataViews[0];
         this.visualSettings = VisualSettings.parse<VisualSettings>(dataView);
-
+        
         if (this.initialLoad) {
             if (options.jsonFilters.length > 0) {
-                this.clicked = true;
-                this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
-                this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
+                this.clickButton();
             }
 
             this.basicFilters = this.utility.getFilters(options, this.visualSettings);
@@ -92,8 +90,12 @@ export class SlicerButton implements IVisual {
 
             // Update the selection fill color in case a change was made to this property
             if(this.clicked) {
-                this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
-                this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
+                this.clickButton();
+            }
+
+            // Update the clicked status in case a bookmark cleared the filter status
+            if(this.clicked && options.jsonFilters.length === 0) {
+                this.unclickButton();
             }
             
             // Set the filter events or remove applied filters if the update removed columns
@@ -103,9 +105,7 @@ export class SlicerButton implements IVisual {
                 this.setFilterEvent();
             } else if (this.clicked) {
                 this.visualHost.applyJsonFilter(null, "general", "filter", FilterAction.merge);
-                this.clicked = false;
-                this.target.style.backgroundColor = "#FFFFFF";
-                this.target.style.opacity = "0";
+                this.unclickButton();
             }
         }
 
@@ -140,14 +140,22 @@ export class SlicerButton implements IVisual {
     private applyFilter = (e: PointerEvent) => {
         if (this.clicked) {
             this.visualHost.applyJsonFilter(this.basicFilters, "general", "filter", FilterAction.remove);
-            this.clicked = false;
-            this.target.style.backgroundColor = "#FFFFFF";
-            this.target.style.opacity = "0";
+            this.unclickButton();
         } else {
             this.visualHost.applyJsonFilter(this.basicFilters, "general", "filter", FilterAction.merge);
-            this.clicked = true;
-            this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
-            this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
+            this.clickButton();
         }
+    }
+
+    private clickButton() {
+        this.clicked = true;
+        this.target.style.backgroundColor = this.visualSettings.slicer.selectionFill;
+        this.target.style.opacity = (1 - this.visualSettings.slicer.transparency / 100).toString();
+    }
+
+    private unclickButton() {
+        this.clicked = false;
+        this.target.style.backgroundColor = "#FFFFFF";
+        this.target.style.opacity = "0";
     }
 }
