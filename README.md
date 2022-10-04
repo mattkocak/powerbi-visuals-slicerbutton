@@ -32,4 +32,4 @@ Additional context for this custom visual can be found in the [Turn your cards i
 - [Slicing Dates and Complex Logic](https://www.youtube.com/watch?v=_mTS2_dPBZ8&ab_channel=MattKocak)
 
 ## Support
-Submit issues, questions, and feature requests as [new issues](https://github.com/mattkocak/powerbi-visuals-slicerbutton/issues/new) in this repository. Use the correct label for the submission (bug, enhancement, etc).
+Submit bugs, feature requests, and questions as [new issues](https://github.com/mattkocak/powerbi-visuals-slicerbutton/issues/new/choose) in this repository. Use the correct template for the submission (bug report, feature request, etc).
