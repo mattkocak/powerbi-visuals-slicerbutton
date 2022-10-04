@@ -33,3 +33,6 @@ Additional context for this custom visual can be found in the [Turn your cards i
 
 ## Support
 Submit bugs, feature requests, and questions as [new issues](https://github.com/mattkocak/powerbi-visuals-slicerbutton/issues/new/choose) in this repository. Use the correct template for the submission (bug report, feature request, etc).
+
+## Contribute
+This is an open source project and encourages contributions. To do this, please follow the [contributing guidelines](https://github.com/mattkocak/powerbi-visuals-slicerbutton/blob/main/CONTRIBUTING.md) for this repo and submit all pull requests to the **dev** branch.
