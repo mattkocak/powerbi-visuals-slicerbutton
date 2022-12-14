@@ -1,5 +1,6 @@
-import deviation from "../deviation";
+import count from "../count.js";
+import deviation from "../deviation.js";
 
-export default function(values, min, max) {
-  return Math.ceil((max - min) / (3.5 * deviation(values) * Math.pow(values.length, -1 / 3)));
+export default function thresholdScott(values, min, max) {
+  return Math.ceil((max - min) * Math.cbrt(count(values)) / (3.49 * deviation(values)));
 }

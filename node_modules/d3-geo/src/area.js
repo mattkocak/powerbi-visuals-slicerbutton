@@ -1,11 +1,13 @@
-import adder from "./adder.js";
+import {Adder} from "d3-array";
 import {atan2, cos, quarterPi, radians, sin, tau} from "./math.js";
 import noop from "./noop.js";
 import stream from "./stream.js";
 
-export var areaRingSum = adder();
+export var areaRingSum = new Adder();
 
-var areaSum = adder(),
+// hello?
+
+var areaSum = new Adder(),
     lambda00,
     phi00,
     lambda0,
@@ -17,7 +19,7 @@ export var areaStream = {
   lineStart: noop,
   lineEnd: noop,
   polygonStart: function() {
-    areaRingSum.reset();
+    areaRingSum = new Adder();
     areaStream.lineStart = areaRingStart;
     areaStream.lineEnd = areaRingEnd;
   },
@@ -68,7 +70,7 @@ function areaPoint(lambda, phi) {
 }
 
 export default function(object) {
-  areaSum.reset();
+  areaSum = new Adder();
   stream(object, areaStream);
   return areaSum * 2;
 }

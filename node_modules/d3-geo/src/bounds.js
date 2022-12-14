@@ -1,4 +1,4 @@
-import adder from "./adder.js";
+import {Adder} from "d3-array";
 import {areaStream, areaRingSum} from "./area.js";
 import {cartesian, cartesianCross, cartesianNormalizeInPlace, spherical} from "./cartesian.js";
 import {abs, degrees, epsilon, radians} from "./math.js";
@@ -8,7 +8,7 @@ var lambda0, phi0, lambda1, phi1, // bounds
     lambda2, // previous lambda-coordinate
     lambda00, phi00, // first point
     p0, // previous 3D point
-    deltaSum = adder(),
+    deltaSum,
     ranges,
     range;
 
@@ -20,7 +20,7 @@ var boundsStream = {
     boundsStream.point = boundsRingPoint;
     boundsStream.lineStart = boundsRingStart;
     boundsStream.lineEnd = boundsRingEnd;
-    deltaSum.reset();
+    deltaSum = new Adder();
     areaStream.polygonStart();
   },
   polygonEnd: function() {

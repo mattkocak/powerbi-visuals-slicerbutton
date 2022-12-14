@@ -40,6 +40,7 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import "./../style/visual.less"
 import * as d3 from "d3";
 import { Utility } from "./utility";
+import { ViewMode } from "powerbi-models";
 
 export class SlicerButton implements IVisual {
     private readonly FILTER_DELIMINATOR: string = ",";
@@ -82,9 +83,9 @@ export class SlicerButton implements IVisual {
             if (this.basicFilters.length > 0) {
                 this.setFilterEvent();
             }
-
+            
             this.initialLoad = false;
-        } else if (options.type === VisualUpdateType.Data) {
+        } else if (options.type === VisualUpdateType.Data && options.viewMode === 1) { // Only reapply the event lister in edit mode (options.viewMode === 1)
             // If the update is of type data, we need to re-construct our filter setup
             this.target.removeEventListener("click", this.applyFilter);
 

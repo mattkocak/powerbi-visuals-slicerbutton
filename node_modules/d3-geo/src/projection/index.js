@@ -36,6 +36,7 @@ function scaleTranslate(k, dx, dy, sx, sy) {
 }
 
 function scaleTranslateRotate(k, dx, dy, sx, sy, alpha) {
+  if (!alpha) return scaleTranslate(k, dx, dy, sx, sy);
   var cosAlpha = cos(alpha),
       sinAlpha = sin(alpha),
       a = cosAlpha * k,
@@ -155,7 +156,7 @@ export function projectionMutator(projectAt) {
 
   function recenter() {
     var center = scaleTranslateRotate(k, 0, 0, sx, sy, alpha).apply(null, project(lambda, phi)),
-        transform = (alpha ? scaleTranslateRotate : scaleTranslate)(k, x - center[0], y - center[1], sx, sy, alpha);
+        transform = scaleTranslateRotate(k, x - center[0], y - center[1], sx, sy, alpha);
     rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma);
     projectTransform = compose(project, transform);
     projectRotateTransform = compose(rotate, projectTransform);

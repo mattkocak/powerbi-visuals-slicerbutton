@@ -1,9 +1,9 @@
-import adder from "../adder.js";
+import {Adder} from "d3-array";
 import {abs} from "../math.js";
 import noop from "../noop.js";
 
-var areaSum = adder(),
-    areaRingSum = adder(),
+var areaSum = new Adder(),
+    areaRingSum = new Adder(),
     x00,
     y00,
     x0,
@@ -20,11 +20,11 @@ var areaStream = {
   polygonEnd: function() {
     areaStream.lineStart = areaStream.lineEnd = areaStream.point = noop;
     areaSum.add(abs(areaRingSum));
-    areaRingSum.reset();
+    areaRingSum = new Adder();
   },
   result: function() {
     var area = areaSum / 2;
-    areaSum.reset();
+    areaSum = new Adder();
     return area;
   }
 };

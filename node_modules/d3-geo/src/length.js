@@ -1,9 +1,9 @@
-import adder from "./adder.js";
+import {Adder} from "d3-array";
 import {abs, atan2, cos, radians, sin, sqrt} from "./math.js";
 import noop from "./noop.js";
 import stream from "./stream.js";
 
-var lengthSum = adder(),
+var lengthSum,
     lambda0,
     sinPhi0,
     cosPhi0;
@@ -47,7 +47,7 @@ function lengthPoint(lambda, phi) {
 }
 
 export default function(object) {
-  lengthSum.reset();
+  lengthSum = new Adder();
   stream(object, lengthStream);
   return +lengthSum;
 }

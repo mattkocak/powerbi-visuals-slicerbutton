@@ -1,6 +1,6 @@
 import {dispatch} from "d3-dispatch";
-import {map} from "d3-collection";
 import {timer} from "d3-timer";
+import lcg from "./lcg.js";
 
 export function x(d) {
   return d.x;
@@ -20,9 +20,10 @@ export default function(nodes) {
       alphaDecay = 1 - Math.pow(alphaMin, 1 / 300),
       alphaTarget = 0,
       velocityDecay = 0.6,
-      forces = map(),
+      forces = new Map(),
       stepper = timer(step),
-      event = dispatch("tick", "end");
+      event = dispatch("tick", "end"),
+      random = lcg();
 
   if (nodes == null) nodes = [];
 
@@ -43,7 +44,7 @@ export default function(nodes) {
     for (var k = 0; k < iterations; ++k) {
       alpha += (alphaTarget - alpha) * alphaDecay;
 
-      forces.each(function (force) {
+      forces.forEach(function(force) {
         force(alpha);
       });
 
@@ -65,7 +66,7 @@ export default function(nodes) {
       if (node.fx != null) node.x = node.fx;
       if (node.fy != null) node.y = node.fy;
       if (isNaN(node.x) || isNaN(node.y)) {
-        var radius = initialRadius * Math.sqrt(i), angle = i * initialAngle;
+        var radius = initialRadius * Math.sqrt(0.5 + i), angle = i * initialAngle;
         node.x = radius * Math.cos(angle);
         node.y = radius * Math.sin(angle);
       }
@@ -76,7 +77,7 @@ export default function(nodes) {
   }
 
   function initializeForce(force) {
-    if (force.initialize) force.initialize(nodes);
+    if (force.initialize) force.initialize(nodes, random);
     return force;
   }
 
@@ -94,7 +95,7 @@ export default function(nodes) {
     },
 
     nodes: function(_) {
-      return arguments.length ? (nodes = _, initializeNodes(), forces.each(initializeForce), simulation) : nodes;
+      return arguments.length ? (nodes = _, initializeNodes(), forces.forEach(initializeForce), simulation) : nodes;
     },
 
     alpha: function(_) {
@@ -117,8 +118,12 @@ export default function(nodes) {
       return arguments.length ? (velocityDecay = 1 - _, simulation) : 1 - velocityDecay;
     },
 
+    randomSource: function(_) {
+      return arguments.length ? (random = _, forces.forEach(initializeForce), simulation) : random;
+    },
+
     force: function(name, _) {
-      return arguments.length > 1 ? ((_ == null ? forces.remove(name) : forces.set(name, initializeForce(_))), simulation) : forces.get(name);
+      return arguments.length > 1 ? ((_ == null ? forces.delete(name) : forces.set(name, initializeForce(_))), simulation) : forces.get(name);
     },
 
     find: function(x, y, radius) {

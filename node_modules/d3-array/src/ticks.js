@@ -2,7 +2,7 @@ var e10 = Math.sqrt(50),
     e5 = Math.sqrt(10),
     e2 = Math.sqrt(2);
 
-export default function(start, stop, count) {
+export default function ticks(start, stop, count) {
   var reverse,
       i = -1,
       n,
@@ -15,15 +15,18 @@ export default function(start, stop, count) {
   if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
 
   if (step > 0) {
-    start = Math.ceil(start / step);
-    stop = Math.floor(stop / step);
-    ticks = new Array(n = Math.ceil(stop - start + 1));
-    while (++i < n) ticks[i] = (start + i) * step;
+    let r0 = Math.round(start / step), r1 = Math.round(stop / step);
+    if (r0 * step < start) ++r0;
+    if (r1 * step > stop) --r1;
+    ticks = new Array(n = r1 - r0 + 1);
+    while (++i < n) ticks[i] = (r0 + i) * step;
   } else {
-    start = Math.floor(start * step);
-    stop = Math.ceil(stop * step);
-    ticks = new Array(n = Math.ceil(start - stop + 1));
-    while (++i < n) ticks[i] = (start - i) / step;
+    step = -step;
+    let r0 = Math.round(start * step), r1 = Math.round(stop * step);
+    if (r0 / step < start) ++r0;
+    if (r1 / step > stop) --r1;
+    ticks = new Array(n = r1 - r0 + 1);
+    while (++i < n) ticks[i] = (r0 + i) / step;
   }
 
   if (reverse) ticks.reverse();

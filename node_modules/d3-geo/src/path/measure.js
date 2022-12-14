@@ -1,8 +1,8 @@
-import adder from "../adder.js";
+import {Adder} from "d3-array";
 import {sqrt} from "../math.js";
 import noop from "../noop.js";
 
-var lengthSum = adder(),
+var lengthSum = new Adder(),
     lengthRing,
     x00,
     y00,
@@ -26,7 +26,7 @@ var lengthStream = {
   },
   result: function() {
     var length = +lengthSum;
-    lengthSum.reset();
+    lengthSum = new Adder();
     return length;
   }
 };
