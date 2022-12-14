@@ -4,7 +4,7 @@
         "displayName": "Slicer Button",
         "guid": "slicerButton",
         "visualClassName": "SlicerButton",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "description": "A button that allows one to apply multiple filters in a specified, predetermined way simply by clicking on it.",
         "supportUrl": "https://github.com/mattkocak/powerbi-visuals-slicerbutton/issues",
         "gitHubUrl": "https://github.com/mattkocak/powerbi-visuals-slicerbutton"
