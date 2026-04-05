@@ -26,11 +26,6 @@ Additional context for this custom visual can be found in the [Turn your cards i
 
 <img width="133" alt="Start Instructions" src="https://user-images.githubusercontent.com/21995128/176464710-a7c62a17-5ba4-466c-bd01-b4e144168133.png">
 
-## Tutorials
-- [Basic Usage](https://www.youtube.com/watch?v=8x2QoE8M2yA&ab_channel=MattKocak)
-- [Slicing Based on Two Columns](https://www.youtube.com/watch?v=Mu9kRZot1d0&ab_channel=MattKocak)
-- [Slicing Dates and Complex Logic](https://www.youtube.com/watch?v=_mTS2_dPBZ8&ab_channel=MattKocak)
-
 ## Support
 Submit bugs, feature requests, and questions as [new issues](https://github.com/mattkocak/powerbi-visuals-slicerbutton/issues/new/choose) in this repository. Use the correct template for the submission (bug report, feature request, etc).
 
